@@ -26,15 +26,19 @@ const SignupPage = () => {
     setUserData((prev) => ({ ...prev, [name]: value }));
 
     if (errors[name]) {
-      const newErrors = { ...errors };
-      delete newErrors[name];
-      setErrors(newErrors);
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors[name];
+        return newErrors;
+      });
     }
 
     if (errors.general) {
-      const newErrors = { ...errors };
-      delete newErrors.general;
-      setErrors(newErrors);
+      setErrors((prevErrors) => {
+        const newErrors = { ...prevErrors };
+        delete newErrors.general;
+        return newErrors;
+      });
     }
   };
 
@@ -63,12 +67,6 @@ const SignupPage = () => {
       return;
     }
 
-    if (userData.password.length < 6) {
-      setError('Password must be at least 6 characters long.');
-      setLoading(false);
-      return;
-    }
-
     try {
       await registerUser({
         username: userData.username,
@@ -87,8 +85,8 @@ const SignupPage = () => {
       const formattedErrors = {};
 
       for (const key in backendErrors) {
-        const errorValue = backendErrors[key];
-        formattedErrors[key] = Array.isArray(errorValue) ? errorValue.join(' ') : errorValue;
+        const value = backendErrors[key];
+        formattedErrors[key] = Array.isArray(value) ? value.join(' ') : value;
       }
 
       if (formattedErrors.non_field_errors) {

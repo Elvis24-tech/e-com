@@ -42,9 +42,10 @@ export const loginUser = async (credentials) => {
 };
 
 export const registerUser = async (userData) => {
-  const res = await apiClient.post('auth/users/', userData);
-  return res.data;
+  const response = await axios.post(`${API_URL}register/`, userData);
+  return response.data;
 };
+
 
 export const fetchUserRole = async (token) => {
   try {
