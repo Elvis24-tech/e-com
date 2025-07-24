@@ -1,26 +1,28 @@
+
 import React from 'react';
+import Spinner from './Spinner';
 
-const Button = ({ type = 'button', variant = 'primary', onClick, children, disabled, className }) => {
-  const baseStyles = "font-bold py-2 px-4 rounded-lg transition duration-300 focus:outline-none focus:ring-2 focus:ring-opacity-50";
-  
-  const variantStyles = {
-    primary: "bg-blue-600 hover:bg-blue-700 text-white focus:ring-blue-500",
-    secondary: "bg-gray-200 hover:bg-gray-300 text-gray-800 border border-gray-300 focus:ring-gray-500",
-    danger: "bg-red-600 hover:bg-red-700 text-white focus:ring-red-500",
-  };
+const Button = ({ children, onClick, type = 'button', variant = 'primary', disabled = false, loading = false, className = '' }) => {
+    const baseStyles = 'font-bold py-2 px-4 rounded-lg shadow-lg transition-transform transform hover:scale-105 disabled:opacity-50 disabled:cursor-not-allowed flex justify-center items-center';
+    
+    const variants = {
+        primary: 'bg-green-600 text-white hover:bg-green-700',
+        secondary: 'bg-blue-600 text-white hover:bg-blue-700',
+        danger: 'bg-red-600 text-white hover:bg-red-700',
+        ghost: 'bg-transparent text-gray-600 hover:bg-gray-200',
+    };
 
-  const disabledStyles = "opacity-50 cursor-not-allowed";
-
-  return (
-    <button
-      type={type}
-      onClick={onClick}
-      disabled={disabled}
-      className={`${baseStyles} ${variantStyles[variant]} ${disabled ? disabledStyles : ''} ${className}`}
-    >
-      {children}
-    </button>
-  );
+    return (
+        <button
+            type={type}
+            onClick={onClick}
+            disabled={disabled || loading}
+            className={`${baseStyles} ${variants[variant]} ${className}`}
+        >
+            {loading ? <Spinner size="sm" /> : children}
+        </button>
+    );
 };
 
 export default Button;
+

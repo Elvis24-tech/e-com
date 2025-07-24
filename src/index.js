@@ -1,9 +1,8 @@
-
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
-import { AuthProvider } from './context/AuthContext.jsx';
-import { CartProvider } from './context/CartContext.jsx';
+import { AuthProvider } from './context/AuthContext.jsx'; // <-- Corrected extension
+import { CartProvider } from './context/CartContext.jsx'; // <-- Corrected extension
 import './index.css'; // Your main Tailwind CSS file
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
