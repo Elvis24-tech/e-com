@@ -1,4 +1,3 @@
-// src/pages/shared/LandingPage.jsx
 import React from 'react';
 
 const LandingPage = ({ onNavigate }) => {
