@@ -1,6 +1,8 @@
+// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './hooks/useAuth';
 import LandingPage from './pages/shared/LandingPage';
+import ContactUs from './pages/shared/ContactUs';
 import BuyerLandingPage from './pages/buyer/BuyerLandingPage';
 import FarmerLandingPage from './pages/farmer/FarmerLandingPage';
 import BuyerHomePage from './pages/buyer/HomePage';
@@ -33,7 +35,7 @@ function App() {
       if (page.startsWith('seller-')) {
         setPage('seller-auth');
       } else if (
-        !['landing', 'landing-buyer', 'landing-farmer', 'auth', 'home'].includes(page)
+        !['landing', 'landing-buyer', 'landing-farmer', 'auth', 'home', 'contact'].includes(page)
       ) {
         setPage('home');
       }
@@ -72,30 +74,26 @@ function App() {
     switch (page) {
       case 'landing':
         return <LandingPage onNavigate={onNavigate} />;
-
       case 'landing-buyer':
         return <BuyerLandingPage onNavigate={onNavigate} />;
-
       case 'landing-farmer':
         return <FarmerLandingPage onNavigate={onNavigate} />;
-
       case 'home':
         return <BuyerHomePage onNavigate={onNavigate} />;
-
       case 'auth':
         if (isAuthenticated && user?.user_type === 'BUYER') {
           onNavigate('home');
           return null;
         }
         return <BuyerAuthPage onNavigate={onNavigate} />;
-
       case 'my-orders':
         return isAuthenticated ? (
           <BuyerOrdersPage onNavigate={onNavigate} />
         ) : (
           <BuyerAuthPage onNavigate={onNavigate} />
         );
-
+      case 'contact':
+        return <ContactUs />;
       default:
         return <NotFoundPage onNavigate={onNavigate} />;
     }

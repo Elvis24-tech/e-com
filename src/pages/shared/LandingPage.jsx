@@ -1,3 +1,4 @@
+// src/pages/shared/LandingPage.jsx
 import React from 'react';
 
 const LandingPage = ({ onNavigate }) => {
@@ -10,8 +11,7 @@ const LandingPage = ({ onNavigate }) => {
         An e-commerce platform where farmers and buyers connect directly — no middlemen.
       </p>
 
-      <div className="flex space-x-4">
-        {/* ✅ Updated to navigate to 'landing-buyer' */}
+      <div className="flex flex-wrap gap-4 justify-center">
         <button
           onClick={() => onNavigate('landing-buyer')}
           className="px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition"
@@ -24,6 +24,13 @@ const LandingPage = ({ onNavigate }) => {
           className="px-6 py-3 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
         >
           I'm a Farmer
+        </button>
+
+        <button
+          onClick={() => onNavigate('contact')}
+          className="px-6 py-3 bg-orange-500 text-white rounded hover:bg-orange-600 transition"
+        >
+          Contact Us
         </button>
       </div>
     </div>
