@@ -1,9 +1,8 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './hooks/useAuth';
-
-// Import Pages
 import LandingPage from './pages/shared/LandingPage';
+import BuyerLandingPage from './pages/buyer/BuyerLandingPage';
+import FarmerLandingPage from './pages/farmer/FarmerLandingPage';
 import BuyerHomePage from './pages/buyer/HomePage';
 import BuyerAuthPage from './pages/buyer/AuthPage';
 import BuyerOrdersPage from './pages/buyer/OrdersPage';
@@ -12,8 +11,6 @@ import FarmerListingsPage from './pages/farmer/ListingsPage';
 import FarmerOrdersPage from './pages/farmer/OrdersPage';
 import FarmerAuthPage from './pages/farmer/AuthPage';
 import NotFoundPage from './pages/shared/NotFoundPage';
-
-// Import Layouts & Components
 import BuyerNavbar from './components/layout/BuyerNavbar';
 import FarmerSidebar from './components/layout/FarmerSidebar';
 import FarmerNavbar from './components/layout/FarmerNavbar';
@@ -21,7 +18,7 @@ import Spinner from './components/common/Spinner';
 import Cart from './components/buyer/Cart';
 
 function App() {
-  const [page, setPage] = useState('landing');
+  const [page, setPage] = useState('landing'); 
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { isAuthenticated, user, loading } = useAuth();
 
@@ -31,12 +28,14 @@ function App() {
     if (!loading && !isAuthenticated) {
       if (page.startsWith('seller-')) {
         setPage('seller-auth');
-      } else if (!['landing', 'auth', 'home'].includes(page)) {
+      } else if (
+        !['landing', 'landing-buyer', 'landing-farmer', 'auth', 'home'].includes(page)
+      ) {
         setPage('home');
       }
     }
   }, [isAuthenticated, loading, page]);
-  
+
   const renderPage = () => {
     if (loading) return <Spinner fullScreen />;
 
@@ -60,20 +59,32 @@ function App() {
     }
 
     switch (page) {
+      case 'landing':
+        return <LandingPage onNavigate={onNavigate} />;
+
+      case 'landing-buyer':
+        return <BuyerLandingPage onNavigate={onNavigate} />;
+
+      case 'landing-farmer':
+        return <FarmerLandingPage onNavigate={onNavigate} />;
+
       case 'home':
         return <BuyerHomePage onNavigate={onNavigate} />;
+
       case 'auth':
         if (isAuthenticated && user?.user_type === 'BUYER') {
           onNavigate('home');
           return null;
         }
         return <BuyerAuthPage onNavigate={onNavigate} />;
+
       case 'my-orders':
-        // **THIS IS THE CHANGE**
-        // Pass the onNavigate function to the Orders Page
-        return isAuthenticated ? <BuyerOrdersPage onNavigate={onNavigate} /> : <BuyerAuthPage onNavigate={onNavigate} />;
-      case 'landing':
-        return <LandingPage onNavigate={onNavigate} />;
+        return isAuthenticated ? (
+          <BuyerOrdersPage onNavigate={onNavigate} />
+        ) : (
+          <BuyerAuthPage onNavigate={onNavigate} />
+        );
+
       default:
         return <NotFoundPage onNavigate={onNavigate} />;
     }
@@ -81,7 +92,10 @@ function App() {
 
   return (
     <div className="min-h-screen font-sans">
-      {!page.startsWith('seller-') && page !== 'landing' && <BuyerNavbar onNavigate={onNavigate} onCartClick={() => setIsCartOpen(true)} />}
+      {!page.startsWith('seller-') &&
+        !page.startsWith('landing') &&
+        <BuyerNavbar onNavigate={onNavigate} onCartClick={() => setIsCartOpen(true)} />
+      }
       <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} onNavigate={onNavigate} />
       {renderPage()}
     </div>

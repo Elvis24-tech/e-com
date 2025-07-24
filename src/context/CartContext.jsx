@@ -12,11 +12,9 @@ export const CartProvider = ({ children }) => {
     const addToCart = (animal) => {
         setItems(prevItems => {
             const itemInCart = prevItems.find(item => item.id === animal.id);
-
-            // NEW: Check against available stock
             if (itemInCart && itemInCart.quantity >= animal.quantity) {
                 alert(`No more stock available for ${animal.name}. You already have the maximum quantity in your cart.`);
-                return prevItems; // Do not add more
+                return prevItems; 
             }
 
             if (itemInCart) {

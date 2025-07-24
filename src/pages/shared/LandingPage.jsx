@@ -1,29 +1,31 @@
-
 import React from 'react';
-import Button from '../../components/common/Button';
 
-const LandingPage = ({ onNavigate }) => (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gray-50">
-        <h1 className="text-5xl font-bold mb-2"><span className="text-green-600">Farm</span>art</h1>
-        <p className="text-xl text-gray-600 mb-10">Your Portal to Quality Livestock</p>
-        <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-8">
-            <div className="text-center">
-                <h2 className="text-2xl font-semibold mb-2">Shop for Livestock</h2>
-                <p className="text-gray-500 mb-4">Browse and buy from trusted farmers.</p>
-                <Button onClick={() => onNavigate('home')} variant="primary" className="px-10">
-                    Go Shopping
-                </Button>
-            </div>
-            <div className="text-center">
-                <h2 className="text-2xl font-semibold mb-2">Sell Your Livestock</h2>
-                <p className="text-gray-500 mb-4">Join our platform and reach more buyers.</p>
-                <Button onClick={() => onNavigate('seller-auth')} variant="secondary" className="px-10">
-                    Seller Central
-                </Button>
-            </div>
-        </div>
+const LandingPage = ({ onNavigate }) => {
+  return (
+    <div className="flex flex-col items-center justify-center min-h-screen bg-green-50 px-4">
+      <h1 className="text-4xl md:text-5xl font-bold text-green-700 mb-6 text-center">
+        Welcome to Farmart
+      </h1>
+      <p className="text-lg text-gray-700 mb-8 text-center max-w-xl">
+        An e-commerce platform where farmers and buyers connect directly — no middlemen.
+      </p>
+
+      <div className="flex space-x-4">
+        <button
+          onClick={() => onNavigate('home')}
+          className="px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition"
+        >
+          I'm a Buyer
+        </button>
+        <button
+          onClick={() => onNavigate('landing-farmer')}
+          className="px-6 py-3 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
+        >
+          I'm a Farmer
+        </button>
+      </div>
     </div>
-);
+  );
+};
 
 export default LandingPage;
-

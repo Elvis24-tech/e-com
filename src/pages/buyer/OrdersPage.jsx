@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import apiClient from '../../api/client';
@@ -7,77 +6,103 @@ import Modal from '../../components/common/Modal';
 import Button from '../../components/common/Button';
 
 const BuyerOrdersPage = ({ onNavigate }) => {
-    const { user, tokens } = useAuth();
-    const [orders, setOrders] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedOrder, setSelectedOrder] = useState(null);
-    const [phoneNumber, setPhoneNumber] = useState('');
-    const [paymentError, setPaymentError] = useState('');
+  const { user, tokens } = useAuth();
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [phone, setPhone] = useState('254');
+  const [mpesaError, setMpesaError] = useState('');
+  const [modalOpen, setModalOpen] = useState(false);
+  const [selOrder, setSelOrder] = useState(null);
 
-    useEffect(() => {
-        apiClient.get('/api/orders/', tokens.access)
-            .then(data => setOrders(data))
-            .catch(err => setError(err.message))
-            .finally(() => setLoading(false));
-    }, [tokens]);
+  useEffect(() => {
+    apiClient.get('/api/orders/', tokens.access)
+      .then(data => setOrders(data))
+      .catch(err => setError(err.message))
+      .finally(() => setLoading(false));
+  }, [tokens]);
 
-    const handlePayClick = (order) => {
-        setSelectedOrder(order);
-        setPhoneNumber(user?.phone_number || '254');
-        setPaymentError('');
-        setIsModalOpen(true);
-    };
+  const handlePay = (order) => {
+    setSelOrder(order);
+    setPhone(user?.phone_number || '254');
+    setMpesaError('');
+    setModalOpen(true);
+  };
 
-    const handlePaymentSubmit = async () => {
-        setPaymentError('');
-        if (!phoneNumber || !phoneNumber.startsWith('254')) {
-            setPaymentError("Phone number must start with 254.");
-            return;
-        }
-        if (!selectedOrder) return;
+  const submitPayment = async () => {
+    if (!phone.startsWith('254')) {
+      setMpesaError('Phone number must start with 254.');
+      return;
+    }
+    try {
+      await apiClient.post('/api/make-payment/', { order_id: selOrder.id, phone_number: phone }, tokens.access);
+      alert('Payment initiated! Check your phone.');
+      setModalOpen(false);
+    } catch {
+      alert('Payment initiation failed.');
+    }
+  };
 
-        try {
-            await apiClient.post('/api/make-payment/', { order_id: selectedOrder.id, phone_number: phoneNumber }, tokens.access);
-            alert("Payment initiated! Check your phone for M-Pesa prompt.");
-            setIsModalOpen(false);
-        } catch (err) {
-            alert("Failed to initiate payment.");
-        }
-    };
+  if (loading) return <Spinner fullScreen />;
+  if (error) return <div className="text-center text-red-500 p-6">{error}</div>;
 
-    if (loading) return <Spinner fullScreen />;
-    if (error) return <div className="text-center p-10 text-red-500">{error}</div>;
-
-    return (
-        <div className="container mx-auto p-8">
-            <div className="flex justify-between items-center mb-6">
-                <h1 className="text-3xl font-bold">My Orders</h1>
-                <Button onClick={() => onNavigate('home')} variant="ghost">← Back to Shop</Button>
-            </div>
-            <div className="space-y-4 bg-white p-6 rounded-lg shadow-md">
-                {orders.length === 0 ? <p>You have no orders.</p> : orders.map(order => (
-                    <div key={order.id} className="border-b last:border-b-0 pb-4 mb-4 flex justify-between items-center">
-                        <div>
-                            <p><strong>Order ID:</strong> #{order.id}</p>
-                            <p><strong>Status:</strong> <span className="font-semibold">{order.status}</span></p>
-                            <p><strong>Total:</strong> Ksh {parseFloat(order.total_price).toLocaleString()}</p>
-                        </div>
-                        {order.status === 'CONFIRMED' && (
-                           <Button onClick={() => handlePayClick(order)} variant="secondary">Pay with M-Pesa</Button>
-                        )}
-                    </div>
-                ))}
-            </div>
-            <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} title="M-Pesa Payment">
-                <p>Pay for Order #{selectedOrder?.id} (Ksh {parseFloat(selectedOrder?.total_price || 0).toLocaleString()})</p>
-                <input type="text" value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} placeholder="M-Pesa Phone Number" className="w-full mt-4 px-4 py-2 border rounded-md"/>
-                {paymentError && <p className="text-red-500 text-sm mt-2">{paymentError}</p>}
-                <Button onClick={handlePaymentSubmit} className="w-full mt-4">Initiate Payment</Button>
-            </Modal>
+  return (
+    <div className="p-8 min-h-screen bg-gray-50">
+      <div className="max-w-5xl mx-auto">
+        <div className="flex justify-between items-center mb-8">
+          <h1 className="text-3xl font-extrabold text-gray-800">My Orders</h1>
+          <Button onClick={() => onNavigate('home')} variant="ghost">
+            ← Back to Shop
+          </Button>
         </div>
-    );
+
+        <div className="bg-white shadow-lg rounded-xl p-6 space-y-6">
+          {orders.length === 0 ? (
+            <p className="text-gray-500 text-lg text-center">You have no orders yet.</p>
+          ) : (
+            orders.map((order) => (
+              <div
+                key={order.id}
+                className="flex justify-between items-center border-b last:border-b-0 pb-4"
+              >
+                <div>
+                  <p className="text-gray-700"><strong>Order ID:</strong> #{order.id}</p>
+                  <p className="text-gray-700"><strong>Status:</strong> <span className="font-semibold">{order.status}</span></p>
+                  <p className="text-gray-700"><strong>Total:</strong> <span className="text-green-600 font-bold">Ksh {parseFloat(order.total_price).toLocaleString()}</span></p>
+                </div>
+                {order.status === 'CONFIRMED' && (
+                  <Button onClick={() => handlePay(order)} variant="secondary">
+                    Pay with M-Pesa
+                  </Button>
+                )}
+              </div>
+            ))
+          )}
+        </div>
+      </div>
+
+      {modalOpen && selOrder && (
+        <Modal isOpen onClose={() => setModalOpen(false)} title={`Pay for Order #${selOrder.id}`}>
+          <div className="space-y-4">
+            <p className="text-lg text-gray-700">
+              Total: <span className="font-bold text-green-700">Ksh {parseFloat(selOrder.total_price).toLocaleString()}</span>
+            </p>
+            <input
+              type="text"
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="2547XXXXXXXX"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-300"
+            />
+            {mpesaError && <p className="text-sm text-red-600">{mpesaError}</p>}
+            <Button onClick={submitPayment} className="w-full mt-2">
+              Pay Now
+            </Button>
+          </div>
+        </Modal>
+      )}
+    </div>
+  );
 };
 
 export default BuyerOrdersPage;
