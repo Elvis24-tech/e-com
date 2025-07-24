@@ -4,15 +4,22 @@ import Button from '../../components/common/Button';
 const FarmerLandingPage = ({ onNavigate }) => {
   return (
     <div className="min-h-screen bg-white flex flex-col items-center justify-center text-center px-4">
-      <h1 className="text-5xl font-extrabold text-green-700 mb-4 drop-shadow-sm">
-        Welcome to <span className="text-green-600">Seller Central</span>
-      </h1>
+      
+      <div className="flex items-center space-x-3 mb-4">
+        <img
+          src="/images/image.jpg.jpg" 
+          alt="Farmart Logo"
+          className="w-12 h-12 rounded-full object-cover shadow"
+        />
+        <h1 className="text-4xl sm:text-5xl font-extrabold text-green-700 drop-shadow-sm">
+          Welcome to <span className="text-green-600">Seller Central</span>
+        </h1>
+      </div>
 
       <p className="text-lg text-gray-600 mb-10 max-w-md">
         Manage your livestock, view and fulfill orders, and connect directly with your customers — all in one place.
       </p>
 
-      {/* Green Themed Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 mb-12">
         <Button
           onClick={() => onNavigate('/seller/dashboard')}
@@ -27,8 +34,6 @@ const FarmerLandingPage = ({ onNavigate }) => {
           Login / Register
         </Button>
       </div>
-
-      {/* Bottom Link */}
       <p className="text-sm text-gray-500">
         Not a farmer?{' '}
         <a

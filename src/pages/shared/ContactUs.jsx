@@ -5,8 +5,6 @@ import Button from '../../components/common/Button';
 const ContactUs = ({ onNavigate, fromPortal }) => {
   const form = useRef();
   const [isSending, setIsSending] = useState(false);
-
-  // This is the key change. Determine the correct "back" path.
   const backPath = fromPortal === 'seller' ? '/seller/dashboard' : '/shop';
   const backText = fromPortal === 'seller' ? '← Back to Dashboard' : '← Back to Shop';
 
@@ -14,13 +12,12 @@ const ContactUs = ({ onNavigate, fromPortal }) => {
     e.preventDefault();
     setIsSending(true);
 
-    // IMPORTANT: Replace with your actual EmailJS credentials
     emailjs
       .sendForm(
-        'service_ili2gqn',    // Your Service ID
-        'template_fcam8bq',   // Your Template ID
+        'service_ili2gqn',    
+        'template_fcam8bq',   
         form.current,
-        'HPYSq67Uru7FGi-2N'     // Your Public Key
+        'HPYSq67Uru7FGi-2N'     
       )
       .then(
         () => {
@@ -62,7 +59,6 @@ const ContactUs = ({ onNavigate, fromPortal }) => {
       </div>
 
       <div className="mt-8">
-        {/* The onClick now uses the dynamic backPath */}
         <Button onClick={() => onNavigate(backPath)} variant="ghost">
           {backText}
         </Button>
