@@ -1,18 +1,22 @@
-// src/App.jsx
 import React, { useState, useEffect } from 'react';
 import { useAuth } from './hooks/useAuth';
+
 import LandingPage from './pages/shared/LandingPage';
 import ContactUs from './pages/shared/ContactUs';
 import BuyerLandingPage from './pages/buyer/BuyerLandingPage';
 import FarmerLandingPage from './pages/farmer/FarmerLandingPage';
+
 import BuyerHomePage from './pages/buyer/HomePage';
 import BuyerAuthPage from './pages/buyer/AuthPage';
 import BuyerOrdersPage from './pages/buyer/OrdersPage';
+
 import FarmerDashboardPage from './pages/farmer/DashboardPage';
 import FarmerListingsPage from './pages/farmer/ListingsPage';
 import FarmerOrdersPage from './pages/farmer/OrdersPage';
 import FarmerAuthPage from './pages/farmer/AuthPage';
+
 import NotFoundPage from './pages/shared/NotFoundPage';
+
 import BuyerNavbar from './components/layout/BuyerNavbar';
 import FarmerSidebar from './components/layout/FarmerSidebar';
 import FarmerNavbar from './components/layout/FarmerNavbar';
@@ -52,10 +56,12 @@ function App() {
   const renderPage = () => {
     if (loading || redirecting) return <Spinner fullScreen />;
 
+    // Farmer (Seller) Pages
     if (page.startsWith('seller-')) {
       if (!isAuthenticated || user?.user_type !== 'FARMER') {
         return <FarmerAuthPage onNavigate={onNavigate} />;
       }
+
       return (
         <div className="flex h-screen bg-gray-100">
           <FarmerSidebar onNavigate={onNavigate} currentPage={page} />
@@ -71,6 +77,7 @@ function App() {
       );
     }
 
+    // Buyer + Shared Pages
     switch (page) {
       case 'landing':
         return <LandingPage onNavigate={onNavigate} />;
@@ -93,7 +100,7 @@ function App() {
           <BuyerAuthPage onNavigate={onNavigate} />
         );
       case 'contact':
-        return <ContactUs />;
+        return <ContactUs onNavigate={onNavigate} />;
       default:
         return <NotFoundPage onNavigate={onNavigate} />;
     }
@@ -105,6 +112,7 @@ function App() {
         !page.startsWith('landing') &&
         <BuyerNavbar onNavigate={onNavigate} onCartClick={() => setIsCartOpen(true)} />
       }
+
       <Cart isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} onNavigate={onNavigate} />
       {renderPage()}
     </div>
