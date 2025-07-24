@@ -35,6 +35,7 @@ const BuyerHomePage = ({ onNavigate }) => {
               className="h-full w-full object-cover"
             />
           </div>
+
           <div className="w-full md:w-1/2 p-10 flex flex-col justify-center items-center">
             <div className="bg-green-100 p-4 rounded-full mb-4">
               <svg
@@ -57,9 +58,18 @@ const BuyerHomePage = ({ onNavigate }) => {
             <p className="text-gray-600 mb-6 text-center text-base leading-relaxed">
               To explore, search, and buy livestock, please log in to your account.
             </p>
+
             <Button onClick={() => onNavigate('auth')} variant="primary">
               Login to Shop
             </Button>
+
+            {/* Peach/Orange styled button */}
+            <button
+              onClick={() => onNavigate('landing')}
+              className="mt-4 px-6 py-2 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition duration-200"
+            >
+              Back to Main Site
+            </button>
           </div>
         </div>
       </div>
@@ -67,6 +77,7 @@ const BuyerHomePage = ({ onNavigate }) => {
   }
 
   if (loading) return <Spinner fullScreen />;
+
   if (error) {
     return (
       <div className="flex items-center justify-center h-[60vh] px-4">
