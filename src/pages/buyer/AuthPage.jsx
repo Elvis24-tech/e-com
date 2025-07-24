@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import Button from '../../components/common/Button';
@@ -29,7 +28,8 @@ const BuyerAuthPage = ({ onNavigate }) => {
         try {
             if (isLogin) {
                 await login(formData.username, formData.password);
-                onNavigate('home');
+                // THIS IS THE FIX
+                onNavigate('/shop');
             } else {
                 await register({ ...formData, user_type: 'BUYER' });
                 alert("Registration successful! Please login.");
@@ -72,4 +72,3 @@ const BuyerAuthPage = ({ onNavigate }) => {
 };
 
 export default BuyerAuthPage;
-

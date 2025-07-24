@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../hooks/useAuth';
 import apiClient from '../../api/client';
@@ -30,7 +31,7 @@ const BuyerHomePage = ({ onNavigate }) => {
           
           <div className="hidden md:block md:w-1/2">
             <img
-              src="/images/image.jpg.jpg"
+              src="/images/image.jpg.jpg" // Note: Make sure you have this image in your public folder
               alt="Farmart Visual"
               className="h-full w-full object-cover"
             />
@@ -59,13 +60,12 @@ const BuyerHomePage = ({ onNavigate }) => {
               To explore, search, and buy livestock, please log in to your account.
             </p>
 
-            <Button onClick={() => onNavigate('auth')} variant="primary">
+            <Button onClick={() => onNavigate('/auth')} variant="primary">
               Login to Shop
             </Button>
 
-            {/* Peach/Orange styled button */}
             <button
-              onClick={() => onNavigate('landing')}
+              onClick={() => onNavigate('/')}
               className="mt-4 px-6 py-2 bg-orange-500 text-white font-semibold rounded-lg hover:bg-orange-600 transition duration-200"
             >
               Back to Main Site

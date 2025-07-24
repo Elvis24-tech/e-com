@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../hooks/useAuth';
+import Button from '../../components/common/Button';
 
 const FarmerAuthPage = ({ onNavigate }) => {
   const { login, register } = useAuth();
@@ -28,7 +29,7 @@ const FarmerAuthPage = ({ onNavigate }) => {
       if (isLogin) {
         const userType = await login(formData.username, formData.password);
         if (userType !== 'FARMER') throw new Error("Access denied. This portal is for farmers only.");
-        onNavigate('seller-dashboard');
+        onNavigate('/seller/dashboard'); 
       } else {
         await register({ ...formData, user_type: 'FARMER' });
         alert("Registration successful! Please login.");
@@ -142,7 +143,7 @@ const FarmerAuthPage = ({ onNavigate }) => {
 
         <div className="text-center mt-4">
         <button
-          onClick={() => onNavigate('landing')}
+          onClick={() => onNavigate('/seller')}
           className="mt-4 inline-flex items-center px-4 py-2 text-sm font-medium border border-gray-300 rounded-md text-gray-600 hover:text-green-700 hover:border-green-500 focus:outline-none focus:ring-2 focus:ring-green-300 transition duration-150 ease-in-out"
 >
            ← Back to Main Site

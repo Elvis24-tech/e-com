@@ -16,7 +16,7 @@ const FarmerNavbar = ({ onNavigate }) => {
         <button
           onClick={() => {
             logout();
-            onNavigate('seller-auth');
+            onNavigate('/seller'); // Redirect to auth page after logout
           }}
           className="bg-green-600 hover:bg-green-700 text-white text-sm px-4 py-1.5 rounded-md transition-colors"
         >

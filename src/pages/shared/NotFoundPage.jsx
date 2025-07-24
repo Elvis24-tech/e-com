@@ -7,7 +7,7 @@ const NotFoundPage = ({ onNavigate }) => (
         <h1 className="text-6xl font-bold text-red-500">404</h1>
         <h2 className="text-3xl font-semibold mt-4">Page Not Found</h2>
         <p className="text-gray-600 mt-2">The page you are looking for does not exist.</p>
-        <Button onClick={() => onNavigate('landing')} className="mt-8">
+        <Button onClick={() => onNavigate('/')} className="mt-8">
             Go to Homepage
         </Button>
     </div>
