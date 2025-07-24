@@ -18,11 +18,15 @@ import Spinner from './components/common/Spinner';
 import Cart from './components/buyer/Cart';
 
 function App() {
-  const [page, setPage] = useState('landing'); 
+  const [page, setPage] = useState('landing');
+  const [redirecting, setRedirecting] = useState(false);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const { isAuthenticated, user, loading } = useAuth();
 
-  const onNavigate = (newPage) => setPage(newPage);
+  const onNavigate = (newPage) => {
+    setRedirecting(true);
+    setPage(newPage);
+  };
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -36,8 +40,15 @@ function App() {
     }
   }, [isAuthenticated, loading, page]);
 
+  useEffect(() => {
+    if (redirecting) {
+      const timeout = setTimeout(() => setRedirecting(false), 50);
+      return () => clearTimeout(timeout);
+    }
+  }, [page, redirecting]);
+
   const renderPage = () => {
-    if (loading) return <Spinner fullScreen />;
+    if (loading || redirecting) return <Spinner fullScreen />;
 
     if (page.startsWith('seller-')) {
       if (!isAuthenticated || user?.user_type !== 'FARMER') {

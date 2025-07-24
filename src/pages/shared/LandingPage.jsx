@@ -11,12 +11,14 @@ const LandingPage = ({ onNavigate }) => {
       </p>
 
       <div className="flex space-x-4">
+        {/* ✅ Updated to navigate to 'landing-buyer' */}
         <button
-          onClick={() => onNavigate('home')}
+          onClick={() => onNavigate('landing-buyer')}
           className="px-6 py-3 bg-green-600 text-white rounded hover:bg-green-700 transition"
         >
           I'm a Buyer
         </button>
+
         <button
           onClick={() => onNavigate('landing-farmer')}
           className="px-6 py-3 bg-yellow-500 text-white rounded hover:bg-yellow-600 transition"
