@@ -69,7 +69,7 @@ const BuyerNavbar = ({ onNavigate, onCartClick }) => {
                   logout();
                   onNavigate('/');
                 }}
-                className="px-3 py-1.5 rounded-full bg-red-600 hover:bg-red-500 text-white transition duration-200"
+                className="px-3 py-1.5 rounded-full bg-green-600 hover:bg-green-500 text-white transition duration-200"
               >
                 Logout
               </button>
