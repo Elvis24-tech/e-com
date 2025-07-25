@@ -79,22 +79,24 @@ const BuyerOrdersPage = ({ onNavigate }) => {
                 className="flex justify-between items-center border-b last:border-none pb-4"
               >
                 <div className="space-y-1">
-                  <p className="text-gray-800"><strong>Order ID:</strong> #{order.id}</p>
+                  <p className="text-gray-900 font-bold">
+                    <span className="text-sm">Order ID:</span> #{order.id}
+                  </p>
                   <p className="text-gray-800">
-                    <strong>Status:</strong>{' '}
-                    <span className={`font-semibold ${
+                    <span className="text-sm font-semibold">Status:</span>{' '}
+                    <span className={`inline-block px-2 py-1 rounded-full text-sm font-semibold ${
                       order.status === 'CONFIRMED'
-                        ? 'text-yellow-600'
+                        ? 'bg-yellow-100 text-yellow-800'
                         : order.status === 'PAID'
-                          ? 'text-green-600'
-                          : 'text-gray-600'
+                          ? 'bg-green-100 text-green-800'
+                          : 'bg-gray-100 text-gray-800'
                     }`}>
                       {order.status}
                     </span>
                   </p>
                   <p className="text-gray-800">
-                    <strong>Total:</strong>{' '}
-                    <span className="text-green-700 font-bold">
+                    <span className="text-sm font-semibold">Total:</span>{' '}
+                    <span className="font-bold text-green-800 bg-green-50 px-2 py-1 rounded">
                       Ksh {parseFloat(order.total_price).toLocaleString()}
                     </span>
                   </p>
