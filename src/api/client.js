@@ -1,4 +1,4 @@
-const API_URL = "https://farmart-backend-k8f8.onrender.com"; // Your Django backend URL
+const API_URL = "https://farmart-backend-k8f8.onrender.com"; 
 
 const apiClient = {
     _request: async (method, endpoint, data = null, token = null) => {
@@ -28,9 +28,8 @@ const apiClient = {
         }
     },
 
-    // NEW method for handling file uploads (multipart/form-data)
     postWithFile: async (endpoint, formData, token = null) => {
-        const headers = {}; // Browser will set Content-Type automatically for FormData
+        const headers = {}; 
         if (token) headers['Authorization'] = `Bearer ${token}`;
 
         const config = {
@@ -54,6 +53,36 @@ const apiClient = {
                  throw new Error('Connection Error: Could not reach the server.');
             }
             console.error(`POST (file) ${endpoint} Error:`, error.data || error.message);
+            throw error;
+        }
+    },
+
+    patchWithFile: async (endpoint, formData, token = null) => {
+        const headers = {};
+        if (token) headers['Authorization'] = `Bearer ${token}`; 
+
+        const config = {
+            method: 'PATCH', 
+            headers,
+            body: formData,
+        };
+
+        try {
+            const response = await fetch(`${API_URL}${endpoint}`, config);
+            if (!response.ok) {
+                const errorData = await response.json();
+                const error = new Error('File update failed');
+                error.data = errorData;
+                throw error;
+            }
+            if (response.status === 204) return null;
+            return response.json();
+        } catch (error) {
+            if (error instanceof TypeError) {
+                 console.error(`Network Error: Could not connect to ${API_URL}${endpoint}.`);
+                 throw new Error('Connection Error: Could not reach the server.');
+            }
+            console.error(`PATCH (file) ${endpoint} Error:`, error.data || error.message);
             throw error;
         }
     },
